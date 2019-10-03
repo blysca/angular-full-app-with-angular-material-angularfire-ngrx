@@ -1,4 +1,13 @@
 <h1>My products!</h1>
+<hr>
+<fa-icon
+  [icon]="faCoffee"></fa-icon>
+<fa-icon icon='coffee' size="xs"></fa-icon>
+<fa-icon [icon]="['fas', 'coffee']" size="xs"></fa-icon>
+<fa-icon [icon]="['fas', 'coffee']" size="lg"></fa-icon>
+<fa-icon [icon]="['fas', 'coffee']" size="6x"></fa-icon>
+<hr>
+
 <input
   *ngIf="!isDisabled"
   type="text" [(ngModel)]="productName">
