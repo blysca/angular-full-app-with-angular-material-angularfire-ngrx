@@ -8,14 +8,24 @@
 <fa-icon [icon]="['fas', 'coffee']" size="6x"></fa-icon>
 <hr>
 
-<input
-  *ngIf="!isDisabled"
-  type="text" [(ngModel)]="productName">
+<form
+  #f="ngForm"
+  (ngSubmit)="onAddProduct(f)">
+  
+  <input
+    *ngIf="!isDisabled"
+    name="productName"
+    type="text"
+    required
+    ngModel>
+  
+  <button
+    *ngIf="!isDisabled"
+    type="submit"
+  >Add product</button>
+  
+</form>
 
-<button
-  *ngIf="!isDisabled"
-  (click)="onAddProduct()"
->Add product</button>
 <h2>{{productName}}</h2>
 <hr>
 <app-product
