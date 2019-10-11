@@ -1,0 +1,19 @@
+nav {
+  margin-left : auto;
+}
+
+mat-toolbar {
+  
+  a {
+    color           : #fff;
+    text-decoration : none;
+    padding         : .25rem .5rem;
+    display         : inline-flex;
+    
+    &:hover, &:active {
+      color           : darken(#fff, 8);
+      text-decoration : none;
+    }
+  }
+  
+}

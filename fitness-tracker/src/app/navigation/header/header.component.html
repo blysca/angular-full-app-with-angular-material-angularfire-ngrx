@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <button
+    fxHide.gt-sm
+    mat-icon-button
+    (click)="onToggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a routerLink="/">LOGO</a>
+  <nav fxHide.lt-md>
+    <a routerLink="/signup">Sign Up</a>
+    <a routerLink="/login">Login</a>
+    <a routerLink="/training">Training</a>
+    <a>Logout</a>
+  </nav>
+</mat-toolbar>
