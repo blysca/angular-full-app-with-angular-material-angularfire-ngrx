@@ -1,1 +1,49 @@
-<p>login works!</p>
+<form
+  (ngSubmit)="onSubmit()"
+  [formGroup]="loginForm"
+>
+  <mat-card class="login-form">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content
+      fxLayout="column"
+      fxLayoutGap="8px">
+      <mat-form-field>
+        <input
+          formControlName="email"
+          matInput
+          name="email"
+          placeholder="Your email"
+          type="email"
+        >
+        <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors.required">Field must not be empty.</mat-error>
+        <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && !email.errors.required">Email is invalid</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          formControlName="password"
+          matInput
+          name="password"
+          placeholder="Your password"
+          type="password"
+        >
+        <mat-hint
+          align="end"
+        > letters counter : {{password.value.length}}</mat-hint>
+        <mat-error
+          *ngIf="password.invalid && (password.dirty || password.touched) && password.errors.required"
+        >Field must not be empty.</mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button
+        [disabled]="loginForm.invalid"
+        color="primary"
+        mat-raised-button
+        type="submit"
+      >Submit
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
