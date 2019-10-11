@@ -17,8 +17,8 @@
           placeholder="Your email"
           type="email"
         >
-        <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && email.errors.required">Field must not be empty.</mat-error>
-        <mat-error *ngIf="email.invalid && (email.dirty || email.touched) && !email.errors.required">Email is invalid</mat-error>
+        <mat-hint>Field must not be empty.</mat-hint>
+        <mat-error>Email is invalid</mat-error>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -31,9 +31,8 @@
         <mat-hint
           align="end"
         > letters counter : {{password.value.length}}</mat-hint>
-        <mat-error
-          *ngIf="password.invalid && (password.dirty || password.touched) && password.errors.required"
-        >Field must not be empty.</mat-error>
+        <mat-error>Field must not be empty.</mat-error>
+<!--    *ngIf="password.invalid && (password.dirty || password.touched) && password.errors.required"    -->
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions align="end">
