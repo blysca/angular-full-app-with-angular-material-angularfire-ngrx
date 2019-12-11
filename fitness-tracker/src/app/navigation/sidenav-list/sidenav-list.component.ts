@@ -9,7 +9,7 @@ import {AuthService} from '../../auth/auth.service';
 })
 export class SidenavListComponent implements OnInit, OnDestroy {
   @Output() closeSidenav = new EventEmitter<void>();
-  isAuth: boolean;
+  isAuth = false;
   authSubscription: Subscription;
 
   constructor(
@@ -23,6 +23,11 @@ export class SidenavListComponent implements OnInit, OnDestroy {
         this.isAuth = authStatus;
       }
     );
+  }
+
+
+  onLogout() {
+    this.authService.logout();
   }
 
   onClose() {
