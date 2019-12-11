@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-stop-training',
@@ -6,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stop-training.component.scss']
 })
 export class StopTrainingComponent implements OnInit {
-
-  constructor() { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private passedData: any
+  ) { }
 
   ngOnInit() {
   }
