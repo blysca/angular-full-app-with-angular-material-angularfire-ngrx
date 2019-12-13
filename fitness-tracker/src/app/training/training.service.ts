@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Exercise} from './exercise.model';
 import {Subject, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {delay, map} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {UiService} from '../shared/ui.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +18,14 @@ export class TrainingService {
   private fbSubs: Subscription[] = [];
 
   constructor(
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private snackBar: MatSnackBar,
+    private uiService: UiService
   ) {
   }
 
   fetchAvailableExercises() {
+    this.uiService.loadingStateChanged.next(true);
     this.fbSubs.push(
       this.db
         .collection('availableExercises')
@@ -35,11 +40,21 @@ export class TrainingService {
                 duration: doc.payload.doc.data()['duration']
               };
             });
-          })
-        ).subscribe((exercises: Exercise[]) => {
-        this.availableExercises = exercises;
-        this.exercisesChanged.next([...this.availableExercises]);
-      })
+          }),
+          delay(1000),
+        ).subscribe(
+        (exercises: Exercise[]) => {
+          this.uiService.loadingStateChanged.next(false);
+          this.availableExercises = exercises;
+          this.exercisesChanged.next([...this.availableExercises]);
+        },
+        error => {
+          this.uiService.loadingStateChanged.next(false);
+          this.snackBar.open(error.message, null, {
+            duration: 3000
+          });
+        }
+      )
     );
   }
 
@@ -76,18 +91,28 @@ export class TrainingService {
   }
 
   fetchCompletedOrCancelledExercises() {
+    this.uiService.loadingStateChanged.next(true);
     this.fbSubs.push(
       this.db
         .collection('finishedExercises')
         .valueChanges()
-        .subscribe((exercises: Exercise[]) => {
-          this.finishedExercisesChanged.next(exercises);
-        })
+        .subscribe(
+          (exercises: Exercise[]) => {
+            this.uiService.loadingStateChanged.next(false);
+            this.finishedExercisesChanged.next(exercises);
+          },
+          error => {
+            this.uiService.loadingStateChanged.next(false);
+            this.snackBar.open(error.message, null, {
+              duration: 3000
+            });
+          }
+        )
     );
   }
 
   cancelSubscriptions() {
-    this.fbSubs.forEach( sub => sub.unsubscribe());
+    this.fbSubs.forEach(sub => sub.unsubscribe());
   }
 
   private addDataToDatabase(exercise: Exercise) {

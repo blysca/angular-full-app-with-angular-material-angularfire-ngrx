@@ -4,6 +4,7 @@
   fxLayout
   fxLayoutAlign="center center">
   <mat-card
+    *ngIf="!isLoading"
     fxFlex.xs="96%"
     fxFlex="400px">
     <mat-card-title fxLayoutAlign="center">Time to start a workout!</mat-card-title>
@@ -29,4 +30,5 @@
         mat-raised-button>Start</button>
     </mat-card-actions>
   </mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
 </form>
