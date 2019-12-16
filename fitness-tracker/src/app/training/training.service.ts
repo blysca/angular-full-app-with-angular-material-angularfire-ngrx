@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Exercise} from './exercise.model';
 import {Subject, Subscription} from 'rxjs';
-import {delay, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {UiService} from '../shared/ui.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,6 @@ export class TrainingService {
 
   constructor(
     private db: AngularFirestore,
-    private snackBar: MatSnackBar,
     private uiService: UiService
   ) {
   }
@@ -40,8 +38,7 @@ export class TrainingService {
                 duration: doc.payload.doc.data()['duration']
               };
             });
-          }),
-          delay(1000),
+          })
         ).subscribe(
         (exercises: Exercise[]) => {
           this.uiService.loadingStateChanged.next(false);
@@ -49,10 +46,10 @@ export class TrainingService {
           this.exercisesChanged.next([...this.availableExercises]);
         },
         error => {
+          console.log('*** Fetching Exercises failed: ', error.message);
           this.uiService.loadingStateChanged.next(false);
-          this.snackBar.open(error.message, null, {
-            duration: 3000
-          });
+          this.uiService.showSnackbar('Fetching Exercises failed, please try again later.', null, 3000);
+          this.exercisesChanged.next(null);
         }
       )
     );
@@ -103,9 +100,7 @@ export class TrainingService {
           },
           error => {
             this.uiService.loadingStateChanged.next(false);
-            this.snackBar.open(error.message, null, {
-              duration: 3000
-            });
+            this.uiService.showSnackbar(error.message, null, 3000);
           }
         )
     );

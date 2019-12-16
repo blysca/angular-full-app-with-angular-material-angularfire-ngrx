@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 })
 export class SignupComponent implements OnInit, OnDestroy {
   maxDate;
-  private isLoading = false;
+  isLoading = false;
   private loadingSubs: Subscription;
 
   constructor(
@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadingSubs = this.uiService.loadingStateChanged.subscribe( isloadingState => this.isLoading = isloadingState)
+    this.loadingSubs = this.uiService.loadingStateChanged.subscribe(isloadingState => this.isLoading = isloadingState);
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
@@ -30,10 +30,12 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.authService.registerUser({
       email: form.value.email,
       password: form.value.password
-    })
+    });
   }
 
   ngOnDestroy(): void {
-    this.loadingSubs.unsubscribe();
+    if (this.loadingSubs) {
+      this.loadingSubs.unsubscribe();
+    }
   }
 }

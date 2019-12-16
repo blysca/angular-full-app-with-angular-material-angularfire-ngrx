@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
-  private isLoading = false;
+  isLoading = false;
   private loadingSubs: Subscription;
 
   constructor(
@@ -46,6 +46,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.loadingSubs.unsubscribe();
+    if (this.loadingSubs) {
+      this.loadingSubs.unsubscribe();
+    }
   }
 }
