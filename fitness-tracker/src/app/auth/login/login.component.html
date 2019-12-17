@@ -37,14 +37,14 @@
     </mat-card-content>
     <mat-card-actions align="end">
       <button
-        *ngIf="!isLoading"
+        *ngIf="!(isLoading$ | async)"
         [disabled]="loginForm.invalid"
         color="primary"
         mat-raised-button
         type="submit"
       >Submit
       </button>
-      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
     </mat-card-actions>
   </mat-card>
 </form>
