@@ -7,9 +7,9 @@
   </button>
   <a routerLink="/">FIT</a>
   <nav fxHide.lt-md>
-    <a *ngIf="!isAuth" routerLink="/signup">Sign Up</a>
-    <a *ngIf="!isAuth" routerLink="/login">Login</a>
-    <a *ngIf="isAuth" routerLink="/training">Training</a>
-    <a *ngIf="isAuth" (click)="onLogout()">Logout</a>
+    <a *ngIf="!(isAuth$ | async)" routerLink="/signup">Sign Up</a>
+    <a *ngIf="!(isAuth$ | async)" routerLink="/login">Login</a>
+    <a *ngIf="isAuth$ | async" routerLink="/training">Training</a>
+    <a *ngIf="isAuth$ | async" (click)="onLogout()">Logout</a>
   </nav>
 </mat-toolbar>

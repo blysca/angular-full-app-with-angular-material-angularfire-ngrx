@@ -2,9 +2,11 @@ import {Injectable} from '@angular/core';
 import {Exercise} from './exercise.model';
 import {Subject, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {UiService} from '../shared/ui.service';
-
+import * as UI from '../shared/ui.actions';
+import * as fromRoot from '../app.reducer';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,12 +20,13 @@ export class TrainingService {
 
   constructor(
     private db: AngularFirestore,
-    private uiService: UiService
+    private uiService: UiService,
+    private store: Store<fromRoot.State>
   ) {
   }
 
   fetchAvailableExercises() {
-    this.uiService.loadingStateChanged.next(true);
+    this.store.dispatch(new UI.StartLoading());
     this.fbSubs.push(
       this.db
         .collection('availableExercises')
@@ -41,13 +44,13 @@ export class TrainingService {
           })
         ).subscribe(
         (exercises: Exercise[]) => {
-          this.uiService.loadingStateChanged.next(false);
+          this.store.dispatch(new UI.StopLoading());
           this.availableExercises = exercises;
           this.exercisesChanged.next([...this.availableExercises]);
         },
         error => {
           console.log('*** Fetching Exercises failed: ', error.message);
-          this.uiService.loadingStateChanged.next(false);
+          this.store.dispatch(new UI.StopLoading());
           this.uiService.showSnackbar('Fetching Exercises failed, please try again later.', null, 3000);
           this.exercisesChanged.next(null);
         }
@@ -88,18 +91,18 @@ export class TrainingService {
   }
 
   fetchCompletedOrCancelledExercises() {
-    this.uiService.loadingStateChanged.next(true);
+    this.store.dispatch(new UI.StartLoading());
     this.fbSubs.push(
       this.db
         .collection('finishedExercises')
         .valueChanges()
         .subscribe(
           (exercises: Exercise[]) => {
-            this.uiService.loadingStateChanged.next(false);
+            this.store.dispatch(new UI.StopLoading());
             this.finishedExercisesChanged.next(exercises);
           },
           error => {
-            this.uiService.loadingStateChanged.next(false);
+            this.store.dispatch(new UI.StopLoading());
             this.uiService.showSnackbar(error.message, null, 3000);
           }
         )
