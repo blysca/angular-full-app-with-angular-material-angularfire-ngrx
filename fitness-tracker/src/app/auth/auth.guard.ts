@@ -4,7 +4,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router, CanLoad, Route, UrlSegment
+  CanLoad, Route, UrlSegment
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -17,7 +17,6 @@ import * as fromRoot from '../app.reducer'
 })
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
-    private router: Router,
     private store: Store<fromRoot.State>
   ) {
   }
